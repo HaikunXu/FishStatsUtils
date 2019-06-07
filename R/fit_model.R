@@ -81,16 +81,30 @@ fit_model = function( settings, Lat_i, Lon_i, t_iz, c_iz, b_i, a_i,
 
   # Build extrapolation grid
   message("\n### Making extrapolation-grid")
-  extrapolation_args = combine_lists( input=extrapolation_args, default=list(Region=settings$Region, strata.limits=settings$strata.limits, zone=settings$zone) )
-  extrapolation_list = do.call( what=make_extrapolation_info, args=extrapolation_args )
 
-  # Build information regarding spatial location and correlation
-  message("\n### Making spatial information")
-  spatial_args = combine_lists( input=spatial_args, default=list(grid_size_km=settings$grid_size_km, n_x=settings$n_x, Method=settings$Method, Lon_i=Lon_i, Lat_i=Lat_i,
-    Extrapolation_List=extrapolation_list, DirPath=working_dir, Save_Results=TRUE, fine_scale=settings$fine_scale) )
-  #spatial_list = make_spatial_info( grid_size_km=settings$grid_size_km, n_x=settings$n_x, Method=settings$Method, Lon_i=Lon_i, Lat_i=Lat_i,
-  #  Extrapolation_List=extrapolation_list, DirPath=working_dir, Save_Results=TRUE, fine_scale=settings$fine_scale )
-  spatial_list = do.call( what=make_spatial_info, args=spatial_args )
+  lat_North <- Data_Geostat$Lat > 0
+  Data_Geostat_North <- Data_Geostat[lat_North,]
+  Extrapolation_List_North = make_extrapolation_info(Region=Region, zone = 13, strata.limits=strata.limits, observations_LL=Data_Geostat_North[,c('Lat','Lon')], grid_dim_km=c(25,25) )
+  
+  lat_South <- Data_Geostat$Lat < 0
+  Data_Geostat_South <- Data_Geostat[lat_South,]
+  Extrapolation_List_South = make_extrapolation_info(Region=Region, zone = 13, strata.limits=strata.limits, observations_LL=Data_Geostat_South[,c('Lat','Lon')], grid_dim_km=c(25,25) )
+  
+  Extrapolation_List_South$Data_Extrap$N_km <- Extrapolation_List_South$Data_Extrap$N_km - 10000
+  
+  a_el <- rbind(Extrapolation_List_North$a_el,Extrapolation_List_South$a_el)
+  Data_Extrap <- rbind(Extrapolation_List_North$Data_Extrap,Extrapolation_List_South$Data_Extrap)
+  zone <- Extrapolation_List_North$zone
+  flip_around_dateline <- Extrapolation_List_North$flip_around_dateline
+  Area_km2_x <- c(Extrapolation_List_North$Area_km2_x,Extrapolation_List_South$Area_km2_x)
+  
+  extrapolation_list <- list("a_el" = a_el, "Data_Extrap" = Data_Extrap, "zone" = zone,
+                             "flip_around_dateline" = flip_around_dateline,
+                             "Area_km2_x" = Area_km2_x)
+
+  spatial_list = make_spatial_info( grid_size_km=grid_size_km, n_x=n_x, Method=Method, Lon=Data_Geostat[,'Lon'], Lat=Data_Geostat[,'Lat'], Extrapolation_List=extrapolation_list, DirPath=DateFile, Save_Results=FALSE )
+  plot_data(Extrapolation_List=extrapolation_list, Spatial_List=spatial_list, Data_Geostat=Data_Geostat )
+  
 
   # Build data
   message("\n### Making data object") # VAST::

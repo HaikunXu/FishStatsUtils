@@ -63,12 +63,27 @@ make_spatial_info = function( n_x, Lon_i, Lat_i, LON_intensity=Lon_i, LAT_intens
       # Locations for samples
       loc_i = Convert_LL_to_UTM_Fn( Lon=Lon_i, Lat=Lat_i, zone=Extrapolation_List$zone, flip_around_dateline=Extrapolation_List$flip_around_dateline )                                                         #$
       loc_i = cbind( 'E_km'=loc_i[,'X'], 'N_km'=loc_i[,'Y'])
+      
+      ind <- loc_i[,2]>6000
+      loc_i[ind,2] <- loc_i[ind,2] - 10000
+      
       # Locations for locations for knots
       loc_intensity = Convert_LL_to_UTM_Fn( Lon=LON_intensity, Lat=LAT_intensity, zone=Extrapolation_List$zone, flip_around_dateline=Extrapolation_List$flip_around_dateline )                                                         #$
       loc_intensity = cbind( 'E_km'=loc_intensity[,'X'], 'N_km'=loc_intensity[,'Y'])
+      
+      ind <- loc_intensity[,2]>6000
+      loc_intensity[ind,2] <- loc_intensity[ind,2] - 10000
+      
     }else{
       loc_i = Convert_LL_to_EastNorth_Fn( Lon=Lon_i, Lat=Lat_i, crs=Extrapolation_List$zone )
+      
+      ind <- loc_i[,2]>6000
+      loc_i[ind,2] <- loc_i[ind,2] - 10000
+      
       loc_intensity = Convert_LL_to_EastNorth_Fn( Lon=LON_intensity, Lat=LAT_intensity, crs=Extrapolation_List$zone )
+      
+      ind <- loc_intensity[,2]>6000
+      loc_intensity[ind,2] <- loc_intensity[ind,2] - 10000
     }
     # Bounds for 2D AR1 grid
     Grid_bounds = grid_size_km * apply(Extrapolation_List$Data_Extrap[,c('E_km','N_km')]/grid_size_km, MARGIN=2, FUN=function(vec){trunc(range(vec))+c(0,1)})
