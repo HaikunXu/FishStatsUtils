@@ -49,7 +49,7 @@
 #' }
 #'
 #' @export
-fit_model = function( settings, zone, Data, t_iz, c_iz, b_i, a_i,
+fit_model_EPO = function( settings, zone, Data, t_iz, c_iz, b_i, a_i,
   v_i=rep(0,length(b_i)), working_dir=paste0(getwd(),"/"),
   Xconfig_zcp=NULL, X_gtp=NULL, X_itp=NULL, Q_ik=NULL, newtonsteps=1,
   extrapolation_args=list(), spatial_args=list(), optimize_args=list(), model_args=list(),

@@ -34,7 +34,7 @@
 #'
 
 #' @export
-make_spatial_info = function( n_x, Lon_i, Lat_i, LON_intensity=Lon_i, LAT_intensity=Lat_i, Extrapolation_List, Method="Mesh",
+make_spatial_info_EPO = function( n_x, Lon_i, Lat_i, LON_intensity=Lon_i, LAT_intensity=Lat_i, Extrapolation_List, Method="Mesh",
   grid_size_km=50, grid_size_LL=1, fine_scale=FALSE,
   iter.max=1000, randomseed=1, nstart=100, DirPath=paste0(getwd(),"/"), Save_Results=FALSE, ... ){
 
