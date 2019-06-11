@@ -4,15 +4,17 @@
 \alias{fit_model_EPO}
 \title{Fit VAST to data}
 \usage{
-fit_model_EPO(settings, Data, t_iz, c_iz, b_i, a_i, v_i = rep(0,
-  length(b_i)), working_dir = paste0(getwd(), "/"), Xconfig_zcp = NULL,
-  X_gtp = NULL, X_itp = NULL, Q_ik = NULL, newtonsteps = 1,
-  extrapolation_args = list(), spatial_args = list(),
-  optimize_args = list(), model_args = list(), silent = TRUE,
-  run_model = TRUE, ...)
+fit_model_EPO(settings, zone = zone, Data, t_iz, c_iz, b_i, a_i,
+  v_i = rep(0, length(b_i)), working_dir = paste0(getwd(), "/"),
+  Xconfig_zcp = NULL, X_gtp = NULL, X_itp = NULL, Q_ik = NULL,
+  newtonsteps = 1, extrapolation_args = list(),
+  spatial_args = list(), optimize_args = list(), model_args = list(),
+  silent = TRUE, run_model = TRUE, ...)
 }
 \arguments{
 \item{settings}{Output from \code{make_settings}}
+
+\item{zone}{UTM zone used for projecting Lat-Lon to km distances; use \code{zone=NA} by default to automatically detect UTM zone from the location of extrapolation-grid samples}
 
 \item{t_iz}{Matrix where each row species the time for each observation i (if t_iz is a vector, it is coerced to a matrix with one column; if it is a matrix with two or more columns, it specifies multiple times for each observation, e.g., both year and season)}
 
