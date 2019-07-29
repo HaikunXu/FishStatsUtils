@@ -140,13 +140,13 @@ fit_model_EPO = function( settings, zone = zone, Data, t_iz, c_iz, b_i, a_i,
   parameter_estimates = do.call( what=TMBhelper::fit_tmb, args=optimize_args_phase1 )
 
   # Check fit of model (i.e., evidence of non-convergence based on bounds, approaching zero, etc)
-  if(exists("check_fit")){
-    problem_found = VAST::check_fit( parameter_estimates )
-    if( problem_found==TRUE ){
-      message("\n")
-      stop("Please change model structure to avoid problems with parameter estimates and then re-try\n", call.=FALSE)
-    }
-  }
+  # if(exists("check_fit")){
+  #   problem_found = VAST::check_fit( parameter_estimates )
+  #   if( problem_found==TRUE ){
+  #     message("\n")
+  #     stop("Please change model structure to avoid problems with parameter estimates and then re-try\n", call.=FALSE)
+  #   }
+  # }
 
   # Restart estimates after checking parameters
   optimize_args_phase2 = combine_lists( input=optimize_args, default=list(obj=tmb_list$Obj, lower=tmb_list$Lower, upper=tmb_list$Upper,
