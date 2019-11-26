@@ -60,8 +60,9 @@ This function assembles a default set of user-decisions for a specified modellin
 \seealso{
 \code{?VAST} for general documentation, \code{?make_settings} for generic settings, \code{?fit_model} for model fitting, and \code{?plot_results} for generic plots
 
-Other wrapper functions: \code{\link{fit_model_EPO}},
-  \code{\link{fit_model}}, \code{\link{plot_results_EPO}},
+Other wrapper functions: \code{\link{fit_model_EPO_N}},
+  \code{\link{fit_model_EPO}}, \code{\link{fit_model}},
+  \code{\link{plot_results_EPO}},
   \code{\link{plot_results}}
 }
 \concept{wrapper functions}
