@@ -68,8 +68,8 @@ fit_model_EPO = function( settings, zone = zone, Data, t_iz, c_iz, b_i, a_i,
     return( output )
   }
 
-  Lat_i <- Data_Geostat[,'Lat']
-  Lon_i <- Data_Geostat[,'Lon']
+  Lat_i <- Data[,'Lat']
+  Lon_i <- Data[,'Lon']
   
   # Assemble inputs
   data_frame = data.frame( "Lat_i"=Lat_i, "Lon_i"=Lon_i, "a_i"=a_i, "v_i"=v_i, "b_i"=b_i )
@@ -85,13 +85,13 @@ fit_model_EPO = function( settings, zone = zone, Data, t_iz, c_iz, b_i, a_i,
   # Build extrapolation grid
   message("\n### Making extrapolation-grid")
 
-  lat_North <- Data_Geostat$Lat > 0
-  Data_Geostat_North <- Data_Geostat[lat_North,]
-  Extrapolation_List_North = make_extrapolation_info(Region=Region, zone = zone, strata.limits=strata.limits, observations_LL=Data_Geostat_North[,c('Lat','Lon')], grid_dim_km=c(25,25) )
+  lat_North <- Data$Lat > 0
+  Data_North <- Data[lat_North,]
+  Extrapolation_List_North = make_extrapolation_info(Region=Region, zone = zone, strata.limits=strata.limits, observations_LL=Data_North[,c('Lat','Lon')], grid_dim_km=c(25,25) )
   
-  lat_South <- Data_Geostat$Lat < 0
-  Data_Geostat_South <- Data_Geostat[lat_South,]
-  Extrapolation_List_South = make_extrapolation_info(Region=Region, zone = zone, strata.limits=strata.limits, observations_LL=Data_Geostat_South[,c('Lat','Lon')], grid_dim_km=c(25,25) )
+  lat_South <- Data$Lat < 0
+  Data_South <- Data[lat_South,]
+  Extrapolation_List_South = make_extrapolation_info(Region=Region, zone = zone, strata.limits=strata.limits, observations_LL=Data_South[,c('Lat','Lon')], grid_dim_km=c(25,25) )
   
   Extrapolation_List_South$Data_Extrap$N_km <- Extrapolation_List_South$Data_Extrap$N_km - 10000
   
@@ -105,8 +105,8 @@ fit_model_EPO = function( settings, zone = zone, Data, t_iz, c_iz, b_i, a_i,
                              "flip_around_dateline" = flip_around_dateline,
                              "Area_km2_x" = Area_km2_x)
 
-  spatial_list = make_spatial_info_EPO( grid_size_km=grid_size_km, n_x=n_x, Method=Method, Lon=Data_Geostat[,'Lon'], Lat=Data_Geostat[,'Lat'], Extrapolation_List=extrapolation_list, DirPath=DateFile, Save_Results=FALSE )
-  plot_data(Extrapolation_List=extrapolation_list, Spatial_List=spatial_list, Data_Geostat=Data_Geostat )
+  spatial_list = make_spatial_info_EPO( grid_size_km=grid_size_km, n_x=n_x, Method=Method, Lon=Data[,'Lon'], Lat=Data[,'Lat'], Extrapolation_List=extrapolation_list, DirPath=DateFile, Save_Results=FALSE )
+  plot_data(Extrapolation_List=extrapolation_list, Spatial_List=spatial_list, Data=Data )
   
 
   # Build data
